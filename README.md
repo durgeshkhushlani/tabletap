@@ -38,25 +38,71 @@ IT645 MERN course project. Team: Durgesh, Moksh.
 
 ## How it works
 
-```
- Guest phone                         Staff / Owner browser
- ┌─────────────┐                     ┌────────────────────┐
- │ scan QR     │                     │ /admin  (JWT)      │
- │ /r/:slug/   │                     │ kitchen · menu ·   │
- │  t/:table   │                     │ tables · reports   │
- └──────┬──────┘                     └─────────┬──────────┘
-        │  public routes                       │  protected routes
-        ▼                                      ▼
- ┌──────────────────────────  Express API  ──────────────────────────┐
- │ /menu/public  /tables/public  /orders      /auth  /menu  /tables   │
- │                                            /kitchen  /reports      │
- └──────────────────────────────┬─────────────────────────────────────┘
-                                ▼
-                            MongoDB
-          Restaurant · User · MenuItem · Table · Order
+```mermaid
+flowchart LR
+    subgraph Guest["Guest (phone, no account)"]
+        G1["Scan table QR<br/>/r/:slug/t/:table"] --> G2["Enter name"] --> G3["Browse menu and cart"] --> G4["Place order and track status"]
+    end
+
+    subgraph Staff["Staff and owner (/admin, JWT)"]
+        S1["Kitchen board"]
+        S2["Menu manager"]
+        S3["Tables and QR codes"]
+        S4["Sales reports"]
+    end
+
+    subgraph API["Express API"]
+        P["Public routes<br/>/menu/public · /tables/public · /orders"]
+        A["Protected routes<br/>/auth · /menu · /tables · /kitchen · /reports"]
+    end
+
+    DB[("MongoDB<br/>Restaurant · User · MenuItem · Table · Order")]
+
+    G1 & G3 & G4 --> P
+    S1 & S2 & S3 & S4 --> A
+    P --> DB
+    A --> DB
 ```
 
-An order moves through `placed → preparing → ready → served`. `placed` and `preparing` orders can also be `cancelled`.
+### Order lifecycle
+
+```mermaid
+stateDiagram-v2
+    [*] --> placed: guest places order
+    placed --> preparing: kitchen starts
+    preparing --> ready: food is ready
+    ready --> served: delivered to table
+    placed --> cancelled
+    preparing --> cancelled
+    served --> [*]
+    cancelled --> [*]
+```
+
+### One order, end to end
+
+```mermaid
+sequenceDiagram
+    actor Guest
+    participant Web as React app
+    participant API as Express API
+    participant DB as MongoDB
+    actor Staff
+
+    Guest->>Web: Scan QR, enter name
+    Web->>API: GET /tables/public/:slug/:number
+    API->>DB: find restaurant and table
+    Guest->>Web: Add items, place order
+    Web->>API: POST /orders (item ids and quantities only)
+    API->>DB: load prices, add tax, save order
+    API-->>Web: order id and total
+    loop every few seconds
+        Staff->>API: GET /kitchen
+        Web->>API: GET /orders/:id
+    end
+    Staff->>API: PATCH /kitchen/:id/status
+    API->>DB: validate transition, update status
+    Web-->>Guest: status changes to preparing, ready, served
+```
 
 ## Project structure
 
