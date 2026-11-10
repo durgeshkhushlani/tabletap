@@ -1,0 +1,249 @@
+{
+  "info": {
+    "name": "TableTap - Tables",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Create table",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('status is 201', () => pm.response.to.have.status(201));",
+              "pm.environment.set('tableId', pm.response.json()._id);"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"number\": 1,\n  \"label\": \"Window\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/tables",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "tables"
+          ]
+        }
+      }
+    },
+    {
+      "name": "List tables",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('status is 200', () => pm.response.to.have.status(200));"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "url": {
+          "raw": "{{baseUrl}}/tables",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "tables"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Update table",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('status is 200', () => pm.response.to.have.status(200));"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"label\": \"Patio\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/tables/{{tableId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "tables",
+            "{{tableId}}"
+          ]
+        }
+      }
+    },
+    {
+      "name": "QR code for table",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('status is 200', () => pm.response.to.have.status(200));"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "url": {
+          "raw": "{{baseUrl}}/tables/{{tableId}}/qr",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "tables",
+            "{{tableId}}",
+            "qr"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Public table lookup",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('status is 200', () => pm.response.to.have.status(200));"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "auth": {
+          "type": "noauth"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/tables/public/demo-diner/1",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "tables",
+            "public",
+            "demo-diner",
+            "1"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Delete table",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('status is 200', () => pm.response.to.have.status(200));"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "url": {
+          "raw": "{{baseUrl}}/tables/{{tableId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "tables",
+            "{{tableId}}"
+          ]
+        }
+      }
+    }
+  ]
+}
