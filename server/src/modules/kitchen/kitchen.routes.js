@@ -1,7 +1,9 @@
 const router = require('express').Router();
 const ctrl = require('./kitchen.controller');
+const { protect } = require('../../middleware/auth');
 
-// TODO (Durgesh): implement
-router.get('/', ctrl.placeholder);
+router.use(protect);
+router.get('/', ctrl.board);
+router.patch('/:id/status', ctrl.updateStatus);
 
 module.exports = router;
