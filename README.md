@@ -35,9 +35,16 @@ cd server
 cp .env.example .env     # set MONGO_URI and JWT_SECRET
 npm install
 npm run dev              # http://localhost:5000/api/health
+npm run seed             # demo data: owner@demo.com / demo1234, guest URL /r/demo-diner/t/1
+npm test                 # API test suite (see docs/testing.md)
 
 # frontend
 cd client
 npm install
 npm run dev              # http://localhost:5173
 ```
+
+
+MongoDB for local development: `docker compose up -d`.
+
+More: [API reference](docs/api.md), [testing](docs/testing.md), [architecture](docs/architecture.md).

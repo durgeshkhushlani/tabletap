@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Navigate, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import api from '../../api/client.js';
 
 export default function GuestMenu() {
@@ -21,7 +21,9 @@ export default function GuestMenu() {
   const count = lines.reduce((n, l) => n + l.quantity, 0);
   const subtotal = useMemo(() => lines.reduce((s, l) => s + l.item.price * l.quantity, 0), [cart]);
 
-  if (!guestName || !tableNumber) return <Navigate to="/" replace />;
+  if (!guestName || !tableNumber) {
+    return <div className="narrow card">Please scan the QR code on your table to start ordering.</div>;
+  }
 
   const change = (item, delta) => {
     const quantity = (cart[item._id]?.quantity || 0) + delta;

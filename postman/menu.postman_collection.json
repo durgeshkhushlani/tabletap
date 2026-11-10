@@ -1,0 +1,209 @@
+{
+  "info": {
+    "name": "TableTap - Menu",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Create item",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('status is 201', () => pm.response.to.have.status(201));",
+              "pm.environment.set('menuItemId', pm.response.json()._id);"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Paneer Tikka\",\n  \"category\": \"Starters\",\n  \"price\": 220,\n  \"isVeg\": true\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/menu",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "menu"
+          ]
+        }
+      }
+    },
+    {
+      "name": "List items (staff)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('status is 200', () => pm.response.to.have.status(200));"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "url": {
+          "raw": "{{baseUrl}}/menu",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "menu"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Update item",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('status is 200', () => pm.response.to.have.status(200));"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"price\": 240\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/menu/{{menuItemId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "menu",
+            "{{menuItemId}}"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Public menu by slug",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('status is 200', () => pm.response.to.have.status(200));"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "auth": {
+          "type": "noauth"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/menu/public/demo-diner",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "menu",
+            "public",
+            "demo-diner"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Delete item",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('status is 200', () => pm.response.to.have.status(200));"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "url": {
+          "raw": "{{baseUrl}}/menu/{{menuItemId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "menu",
+            "{{menuItemId}}"
+          ]
+        }
+      }
+    }
+  ]
+}
