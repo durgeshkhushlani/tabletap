@@ -4,6 +4,7 @@ import ProtectedRoute from './components/ProtectedRoute.jsx';
 // Guest ordering (Moksh)
 import GuestEntry from './pages/guest/GuestEntry.jsx';
 import GuestMenu from './pages/guest/GuestMenu.jsx';
+import GuestOrder from './pages/guest/GuestOrder.jsx';
 
 // Restaurant management (Durgesh)
 import Login from './pages/admin/Login.jsx';
@@ -15,6 +16,7 @@ export default function App() {
       {/* QR target: /r/<restaurantSlug>/t/<tableNumber> */}
       <Route path="/r/:slug/t/:table" element={<GuestEntry />} />
       <Route path="/r/:slug/menu" element={<GuestMenu />} />
+      <Route path="/r/:slug/order/:id" element={<GuestOrder />} />
 
       <Route path="/admin/login" element={<Login />} />
       <Route
