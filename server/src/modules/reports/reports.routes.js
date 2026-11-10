@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const ctrl = require('./reports.controller');
+const { protect, restrictTo } = require('../../middleware/auth');
 
-// TODO (Durgesh): implement
-router.get('/', ctrl.placeholder);
+router.get('/summary', protect, restrictTo('owner'), ctrl.summary);
 
 module.exports = router;
