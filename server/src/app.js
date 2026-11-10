@@ -10,7 +10,7 @@ const app = express();
 
 app.use(helmet());
 app.use(cors({ origin: clientUrl }));
-app.use(express.json());
+app.use(express.json({ limit: '100kb' }));
 app.use(morgan('dev'));
 
 app.get('/api/health', (req, res) => res.json({ status: 'ok', app: 'TableTap' }));
