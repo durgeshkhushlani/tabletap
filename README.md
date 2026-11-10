@@ -81,27 +81,17 @@ stateDiagram-v2
 ### One order, end to end
 
 ```mermaid
-sequenceDiagram
-    actor Guest
-    participant Web as React app
-    participant API as Express API
-    participant DB as MongoDB
-    actor Staff
-
-    Guest->>Web: Scan QR, enter name
-    Web->>API: GET /tables/public/:slug/:number
-    API->>DB: find restaurant and table
-    Guest->>Web: Add items, place order
-    Web->>API: POST /orders (item ids and quantities only)
-    API->>DB: load prices, add tax, save order
-    API-->>Web: order id and total
-    loop every few seconds
-        Staff->>API: GET /kitchen
-        Web->>API: GET /orders/:id
-    end
-    Staff->>API: PATCH /kitchen/:id/status
-    API->>DB: validate transition, update status
-    Web-->>Guest: status changes to preparing, ready, served
+flowchart TD
+    A["1. Guest scans the table QR"] --> B["2. App checks the table<br/>GET /tables/public/:slug/:number"]
+    B --> C["3. Guest enters a name, adds items to the cart"]
+    C --> D["4. App sends item ids and quantities only<br/>POST /orders"]
+    D --> E["5. API loads real prices, adds tax,<br/>saves the order as placed"]
+    E --> F["6. Guest sees the order status page<br/>polls GET /orders/:id"]
+    E --> G["6. Kitchen board shows the new order<br/>polls GET /kitchen"]
+    G --> H["7. Staff moves it forward<br/>PATCH /kitchen/:id/status"]
+    H --> I["8. API validates the transition<br/>and updates MongoDB"]
+    I --> F
+    F --> J(["Guest sees: preparing, ready, served"])
 ```
 
 ## Project structure
