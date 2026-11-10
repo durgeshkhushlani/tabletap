@@ -1,0 +1,118 @@
+{
+  "info": {
+    "name": "TableTap - Orders",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Place order (guest)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('status is 201', () => pm.response.to.have.status(201));",
+              "pm.environment.set('orderId', pm.response.json()._id);"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "auth": {
+          "type": "noauth"
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"slug\": \"demo-diner\",\n  \"guestName\": \"Guest\",\n  \"tableNumber\": 1,\n  \"items\": [\n    {\n      \"menuItem\": \"{{menuItemId}}\",\n      \"quantity\": 2,\n      \"note\": \"less spicy\"\n    }\n  ]\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/orders",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "orders"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Order status (guest)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('status is 200', () => pm.response.to.have.status(200));"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "auth": {
+          "type": "noauth"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/orders/{{orderId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "orders",
+            "{{orderId}}"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Empty items (expects 400)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('status is 400', () => pm.response.to.have.status(400));"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "auth": {
+          "type": "noauth"
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"slug\": \"demo-diner\",\n  \"guestName\": \"Guest\",\n  \"tableNumber\": 1,\n  \"items\": []\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/orders",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "orders"
+          ]
+        }
+      }
+    }
+  ]
+}
